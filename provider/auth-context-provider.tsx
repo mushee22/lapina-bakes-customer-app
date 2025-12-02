@@ -83,17 +83,18 @@ export default function AuthContextProvider({
     setIsAuthenticated(true);
     setIsAuthenticating(false);
     await saveToken(token || "");
-    handleGotoHomePage()
+    handleGotoHomePage(user)
   };
 
-  const handleGotoHomePage = useCallback(() => {
+  const handleGotoHomePage = useCallback((user?: User) => {
     const role = user?.roles[0];
+    console.log(role, "role is updated")
     if (!role || role !== ALLOWED_ROLE) {
       router.replace("/login");
       return;
     }
-    router.replace("/delivery/(tabs)/home");
-  },[user?.roles, router])
+    router.replace("/customer/(tabs)/home");
+  },[router])
 
   const onLogout = async () => {
     setIsAuthenticated(false);

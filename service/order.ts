@@ -8,11 +8,12 @@ class OrderService {
         this.baseUrl = 'orders';
     }
 
-    async getUserOrders(page?: number) {
+    async getUserOrders(page?: number, ) {
         const urlParams = new URLSearchParams()
         if (page) {
             urlParams.append("page", page.toString())
         }
+
         const response = await apiClient.get<Order[]>(this.baseUrl + '?' + urlParams.toString());
         return {
             orders: response.data,

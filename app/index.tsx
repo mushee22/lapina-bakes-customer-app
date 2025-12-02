@@ -11,6 +11,7 @@ export default function Index() {
     if (isAuthenticating) return;
     if (isAuthenticated) {
       onGotoHomePage()
+      return
     }
     router.replace('/login');
   }, [isAuthenticated, isAuthenticating, router, user?.roles, onGotoHomePage]);  

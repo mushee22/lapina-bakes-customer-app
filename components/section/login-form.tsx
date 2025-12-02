@@ -11,6 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { Eye, EyeClosed, Lock, Mail } from "lucide-react-native";
 import { Controller, SubmitErrorHandler, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 export interface FormValues {
   email: string;
@@ -22,13 +23,18 @@ export default function LoginForm() {
   const { showPassword, toggleShowPassword } = usePasswordToggle();
   const { onSuccessFullyLogin } = useAuthContext()
   
-  const { mutateAsync: loginMutation } = useMutation<ApiResponse<LoginResponse>, CustomError, FormValues>({
+  const { mutateAsync: loginMutation, isPending } = useMutation<ApiResponse<LoginResponse>, CustomError, FormValues>({
         mutationFn: async (payload) => authService.login(payload),
         onSuccess: (data) => {
+            // console.log("login success", data) 
             onSuccessFullyLogin?.(data.data?.user, data.data?.token)
         },
         onError: (error) => {
-            AlertDialog.error(error.message);
+            Toast.show({
+              type: "error",
+              text1: "Invalid credentials",
+              text2: "Check your email and password"
+            })
         } 
     })
 
@@ -120,6 +126,7 @@ export default function LoginForm() {
         activeOpacity={0.8}
         onPress={handleSubmit(onSubmit, onError)}
         disabled={isSubmitting}
+        isLoading={isSubmitting}
         className="mt-4"
         variant="primary"
       >
