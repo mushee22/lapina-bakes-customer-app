@@ -78,7 +78,7 @@ export default function OrderScreen() {
                 itemCount={order.order_items?.length}
                 status={order.status}
                 items={order.order_items}
-                detailViewPathGroup="delivery"
+                detailViewPathGroup="customer"
               />
             )}
             keyExtractor={(item: Order) => item.id.toString()}
