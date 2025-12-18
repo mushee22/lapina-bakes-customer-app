@@ -23,7 +23,7 @@
       "splash": {
         "backgroundColor": "#ffffff",
         "dark": {
-          "backgroundColor": "#000000"
+          "backgroundColor": "#ffffff"
         }
       }
     },
@@ -39,7 +39,7 @@
         {
           "backgroundColor": "#ffffff",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#ffffff"
           }
         }
       ],
