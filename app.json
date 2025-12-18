@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.lapinabakers",
+      "bundleIdentifier": "com.lapinabakersapp",
       "icon": {
         "dark": "./assets/images/ios-light.png",
         "light": "./assets/images/ios-light.png"
@@ -19,7 +19,7 @@
     "android": {
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.lapinabakers",
+      "package": "com.lapinabakersapp",
       "splash": {
         "backgroundColor": "#ffffff",
         "dark": {
