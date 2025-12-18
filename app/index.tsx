@@ -10,17 +10,17 @@ export default function Index() {
   useEffect(() => {
     if (isAuthenticating) return;
     if (isAuthenticated) {
-      onGotoHomePage()
+      onGotoHomePage(user)
       return
     }
     router.replace('/login');
-  }, [isAuthenticated, isAuthenticating, router, user?.roles, onGotoHomePage]);  
+  }, [isAuthenticated, isAuthenticating, router, user?.roles, onGotoHomePage]);
 
   return (
     <View className="flex-1 items-center justify-center bg-white">
-     <Image 
-      source={require('../assets/images/logo.jpg')}
-     />
+      <Image
+        source={require('../assets/images/logo.jpg')}
+      />
     </View>
   );
 }

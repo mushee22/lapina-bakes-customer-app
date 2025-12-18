@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "lapina-bakers",
+    "name": "Lapina Bakers",
     "slug": "lapina-bakers",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -19,13 +19,7 @@
     "android": {
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.lapinabakersapp",
-      "splash": {
-        "backgroundColor": "#ffffff",
-        "dark": {
-          "backgroundColor": "#ffffff"
-        }
-      }
+      "package": "com.lapinabakersapp"
     },
     "web": {
       "output": "static",
@@ -37,10 +31,13 @@
       [
         "expo-splash-screen",
         {
+          "image": "./assets/images/icon.png",
           "backgroundColor": "#ffffff",
           "dark": {
+            "image": "./assets/images/icon.png",
             "backgroundColor": "#ffffff"
-          }
+          },
+          "imageWidth": 200
         }
       ],
       "expo-secure-store",

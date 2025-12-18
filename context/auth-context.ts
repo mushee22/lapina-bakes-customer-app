@@ -6,8 +6,8 @@ export type AuthContextType = {
   isAuthenticating: boolean;
   user?: User;
   token?: string;
-  onSuccessFullyLogin?: (user?:User, token?: string) => void;
-  onGotoHomePage: () => void;
+  onSuccessFullyLogin?: (user?: User, token?: string) => void;
+  onGotoHomePage: (user?: User) => void;
   onLogout: () => void;
 };
 
@@ -15,6 +15,6 @@ export type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isAuthenticating: true,
-  onLogout: () => {},
-  onGotoHomePage: () => {}
+  onLogout: () => { },
+  onGotoHomePage: () => { }
 });

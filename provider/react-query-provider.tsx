@@ -12,7 +12,7 @@ import { AppStateStatus, Platform } from 'react-native';
 export const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
-            retry: 2
+            retry: false
         }
     }
 })
@@ -30,6 +30,6 @@ export default function ReactQueryProvider({ children }: PropsWithChildren) {
 
 function onAppStateChange(status: AppStateStatus) {
     if (Platform.OS !== 'web') {
-      focusManager.setFocused(status === 'active');
+        focusManager.setFocused(status === 'active');
     }
-  }
+}

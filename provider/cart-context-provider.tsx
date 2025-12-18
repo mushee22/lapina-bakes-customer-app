@@ -1,4 +1,5 @@
 import { CartContext } from "@/context/cart-context";
+import { useAuthContext } from "@/hooks/use-auth-context";
 import CustomError from "@/lib/error";
 import { cartService } from "@/service/cart";
 import { orderService } from "@/service/order";
@@ -18,6 +19,7 @@ export default function CartContextProvider({
   const router = useRouter();
   const [lastOrder, setLastOrder] = useState<Order | null>(null);
   const [showOrderSuccess, setShowOrderSuccess] = useState(false);
+  const { isAuthenticated } = useAuthContext();
 
   const {
     data,
@@ -27,6 +29,7 @@ export default function CartContextProvider({
   } = useQuery({
     queryKey: ["cart"],
     queryFn: () => cartService.getUserCart(),
+    enabled: isAuthenticated,
   });
 
   const { mutateAsync: addItem, isPending: isAddingItem } = useMutation({

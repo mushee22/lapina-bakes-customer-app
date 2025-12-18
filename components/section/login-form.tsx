@@ -19,24 +19,23 @@ export interface FormValues {
 }
 
 export default function LoginForm() {
-  
+
   const { showPassword, toggleShowPassword } = usePasswordToggle();
   const { onSuccessFullyLogin } = useAuthContext()
-  
+
   const { mutateAsync: loginMutation, isPending } = useMutation<ApiResponse<LoginResponse>, CustomError, FormValues>({
-        mutationFn: async (payload) => authService.login(payload),
-        onSuccess: (data) => {
-            // console.log("login success", data) 
-            onSuccessFullyLogin?.(data.data?.user, data.data?.token)
-        },
-        onError: (error) => {
-            Toast.show({
-              type: "error",
-              text1: "Invalid credentials",
-              text2: "Check your email and password"
-            })
-        } 
-    })
+    mutationFn: async (payload) => authService.login(payload),
+    onSuccess: async (data) => {
+      await onSuccessFullyLogin?.(data.data?.user, data.data?.token)
+    },
+    onError: (error) => {
+      Toast.show({
+        type: "error",
+        text1: "Invalid credentials",
+        text2: "Check your email and password"
+      })
+    }
+  })
 
   const {
     handleSubmit,

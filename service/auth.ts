@@ -3,14 +3,14 @@ import { LoginResponse } from "@/type/auth";
 import { User } from "@/type/user";
 
 class AuthService {
-    async login(data:{email: string, password: string}) {
+    async login(data: { email: string, password: string }) {
         const body = JSON.stringify(
             {
                 email: data.email,
                 password: data.password
             }
         )
-        const response = await apiClient.post<LoginResponse>(`login`,{
+        const response = await apiClient.post<LoginResponse>(`login`, {
             body
         })
         return response;

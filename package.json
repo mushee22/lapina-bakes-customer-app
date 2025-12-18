@@ -1,5 +1,5 @@
 {
-  "name": "lapina-bakes",
+  "name": "lapina-bakers",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
@@ -22,7 +22,6 @@
     "clsx": "^2.1.1",
     "expo": "~54.0.29",
     "expo-constants": "~18.0.10",
-    "expo-dev-client": "~6.0.20",
     "expo-device": "~8.0.10",
     "expo-font": "~14.0.9",
     "expo-haptics": "~15.0.8",

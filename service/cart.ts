@@ -37,7 +37,7 @@ class CartService {
         return response.data;
     }
 
-   
+
 }
 
 export const cartService = new CartService()
