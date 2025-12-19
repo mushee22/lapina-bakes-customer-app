@@ -6,12 +6,13 @@ import {
   Animated,
   Dimensions,
   Image,
+  KeyboardAvoidingView,
   Modal,
   PanResponder,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  View
 } from "react-native";
 import { Button, Typography } from "../elements";
 import ProductPrice from "./product-price";
@@ -72,7 +73,7 @@ export default function AddToCartBottomSheet({
 
   useEffect(() => {
 
-    if(!cartItem) {
+    if (!cartItem) {
       setQuantity(1);
       setQuantityText("1");
       return;
@@ -151,7 +152,7 @@ export default function AddToCartBottomSheet({
 
     const numValue = parseInt(numericText);
 
-    if(
+    if (
       numValue > product.availableQuantity
     ) {
       setMaxQuantityWarning(`Max quantity is ${product.availableQuantity}`);
@@ -183,7 +184,7 @@ export default function AddToCartBottomSheet({
 
   const cartItem = useMemo(() => cartItems.find((item) => item.product_id === product.id), [cartItems, product.id]);
   const total = useMemo(() => (product.sellingPrice || product.price) * quantity || 0, [product.sellingPrice, product.price, quantity])?.toFixed(2);
-  
+
 
 
   return (
@@ -227,122 +228,123 @@ export default function AddToCartBottomSheet({
             <X size={20} color="#666" />
           </TouchableOpacity>
         </View>
-
-        <View className="px-6 pb-6">
-          <View className="flex-row items-center mb-4">
-            <View className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 mr-4">
-              {
-                <Image
-                  source={
-                    product.image
-                      ? { uri: product.image }
-                      : require("@/assets/images/logo.jpg")
-                  }
-                  className="w-full h-full"
-                  resizeMode="cover"
-                />
-              }
-            </View>
-            <View className="flex-1">
-              <Typography.Lg
-                className="font-bold text-gray-900 mb-1"
-                numberOfLines={2}
-              >
-                {product.name}
-              </Typography.Lg>
-              <ProductPrice price={product.price} sellingPrice={product.sellingPrice} />
-              {
-                product.gst && (
-                  <Typography.Sm className="text-gray-600">
-                    GST({product.gst}%)
-                  </Typography.Sm>
-                )
-              }
-              <Typography.Sm className="text-gray-500 mt-1">
-                {product.availableQuantity} available
-              </Typography.Sm>
-            </View>
-          </View>
-
-          <View className="mb-4">
-            <Typography.Lg className="font-semibold text-gray-900 mb-3">
-              Quantity
-            </Typography.Lg>
-
-            <View className="items-center">
-              <View className="bg-white border-2 border-primary/20 rounded-2xl shadow-sm shadow-primary/5">
-                <TextInput
-                  value={quantityText}
-                  onChangeText={handleQuantityChange}
-                  onBlur={handleQuantityBlur}
-                  keyboardType="number-pad"
-                  selectTextOnFocus
-                  style={{
-                    fontSize: 24,
-                    fontWeight: "bold",
-                    color: "#C85A2B",
-                    textAlign: "center",
-                    paddingHorizontal: 20,
-                    paddingVertical: 16,
-                    minWidth: 100,
-                  }}
-                  placeholder="1"
-                  placeholderTextColor="#C85A2B80"
-                  maxLength={3}
-                />
+        <KeyboardAvoidingView>
+          <View className="px-6 pb-6">
+            <View className="flex-row items-center mb-4">
+              <View className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 mr-4">
+                {
+                  <Image
+                    source={
+                      product.image
+                        ? { uri: product.image }
+                        : require("@/assets/images/logo.jpg")
+                    }
+                    className="w-full h-full"
+                    resizeMode="cover"
+                  />
+                }
               </View>
+              <View className="flex-1">
+                <Typography.Lg
+                  className="font-bold text-gray-900 mb-1"
+                  numberOfLines={2}
+                >
+                  {product.name}
+                </Typography.Lg>
+                <ProductPrice price={product.price} sellingPrice={product.sellingPrice} />
+                {
+                  product.gst && (
+                    <Typography.Sm className="text-gray-600">
+                      GST({product.gst}%)
+                    </Typography.Sm>
+                  )
+                }
+                <Typography.Sm className="text-gray-500 mt-1">
+                  {product.availableQuantity} available
+                </Typography.Sm>
+              </View>
+            </View>
+
+            <View className="mb-4">
+              <Typography.Lg className="font-semibold text-gray-900 mb-3">
+                Quantity
+              </Typography.Lg>
+
+              <View className="items-center">
+                <View className="bg-white border-2 border-primary/20 rounded-2xl shadow-sm shadow-primary/5">
+                  <TextInput
+                    value={quantityText}
+                    onChangeText={handleQuantityChange}
+                    onBlur={handleQuantityBlur}
+                    keyboardType="number-pad"
+                    selectTextOnFocus
+                    style={{
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      color: "#C85A2B",
+                      textAlign: "center",
+                      paddingHorizontal: 20,
+                      paddingVertical: 16,
+                      minWidth: 100,
+                    }}
+                    placeholder="1"
+                    placeholderTextColor="#C85A2B80"
+                    maxLength={3}
+                  />
+                </View>
+                {
+                  maxQuantityWarning ? (
+                    <Typography.Sm className="text-red-500 mt-3">
+                      {maxQuantityWarning}
+                    </Typography.Sm>
+                  )
+                    :
+                    <Typography.Sm className="text-gray-500 mt-3">
+                      Max {product.availableQuantity} items available
+                    </Typography.Sm>
+                }
+              </View>
+            </View>
+            <View className="bg-gray-50 rounded-2xl p-4 mb-4">
+              <View className="flex-row justify-between items-center">
+                <Typography.Lg className="font-semibold text-gray-700">
+                  Total
+                </Typography.Lg>
+                <Typography.Xl className="font-bold text-primary">
+                  {CURRENCY}
+                  {total}
+                </Typography.Xl>
+              </View>
+            </View>
+            <View className="flex-row  items-center">
               {
-                maxQuantityWarning ? (
-                  <Typography.Sm className="text-red-500 mt-3">
-                    {maxQuantityWarning}
-                  </Typography.Sm>
-                )
-                :
-              <Typography.Sm className="text-gray-500 mt-3">
-                Max {product.availableQuantity} items available
-              </Typography.Sm>
+                cartItem?.quantity == quantity ? (
+                  <Button
+                    activeOpacity={0.8}
+                    onPress={handleAddToCart}
+                    className="bg-primary flex-1"
+                    disabled={true}
+                  >
+                    <Typography.Base className="text-white font-bold text-center">
+                      Current Quantity: {cartItem.quantity}
+                    </Typography.Base>
+                  </Button>
+                ) :
+                  maxQuantityWarning.length ?
+                    null :
+                    <Button
+                      activeOpacity={0.8}
+                      onPress={handleAddToCart}
+                      className="bg-primary flex-1"
+                    >
+                      <Typography.Base className="text-white font-bold text-center">
+                        {cartItem ? "Update" : "Add"} {quantity} to Cart
+                      </Typography.Base>
+                    </Button>
               }
             </View>
           </View>
-          <View className="bg-gray-50 rounded-2xl p-4 mb-4">
-            <View className="flex-row justify-between items-center">
-              <Typography.Lg className="font-semibold text-gray-700">
-                Total
-              </Typography.Lg>
-              <Typography.Xl className="font-bold text-primary">
-                {CURRENCY}
-                {total}
-              </Typography.Xl>
-            </View>
-          </View>
-          <View className="flex-row  items-center">
-          {
-            cartItem?.quantity == quantity ? (
-              <Button
-                activeOpacity={0.8}
-                onPress={handleAddToCart}
-                className="bg-primary flex-1"
-                disabled={true}
-              >
-                <Typography.Base className="text-white font-bold text-center">
-                  Current Quantity: {cartItem.quantity}
-                </Typography.Base>
-              </Button>
-            ) : 
-            maxQuantityWarning.length ?
-            null :
-            <Button
-              activeOpacity={0.8}
-              onPress={handleAddToCart}
-              className="bg-primary flex-1"
-            >
-              <Typography.Base className="text-white font-bold text-center">
-                {cartItem ? "Update" : "Add"} {quantity} to Cart 
-              </Typography.Base>
-            </Button>
-          }
-          </View>
-        </View>
+        </KeyboardAvoidingView>
       </Animated.View>
     </Modal>
   );
