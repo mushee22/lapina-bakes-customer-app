@@ -6,14 +6,14 @@ import {
   Animated,
   Dimensions,
   Image,
-  KeyboardAvoidingView,
   Modal,
   PanResponder,
+  Platform,
   TextInput,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View
 } from "react-native";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import { Button, Typography } from "../elements";
 import ProductPrice from "./product-price";
 
@@ -191,44 +191,42 @@ export default function AddToCartBottomSheet({
     <Modal
       visible={visible}
       transparent
-      animationType="none"
+      animationType="slide"
       onRequestClose={onClose}
+      statusBarTranslucent={true}
     >
-      <TouchableWithoutFeedback onPress={onClose}>
-        <Animated.View
-          className="flex-1 bg-black/50"
-          style={{ opacity: backdropOpacity }}
-        />
-      </TouchableWithoutFeedback>
-
-      <Animated.View
-        className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
-        style={{
-          transform: [{ translateY }],
-        }}
-        onLayout={(event) => {
-          const { height } = event.nativeEvent.layout;
-          setSheetHeight(height);
-        }}
-        {...panResponder.panHandlers}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : 'height'}
+        style={{ flex: 1 }}
       >
-        <View className="items-center py-3">
-          <View className="w-10 h-1 bg-gray-300 rounded-full" />
-        </View>
+        <View
+          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
+          style={{
+            // transform: [{ translateY }],
+          }}
+          onLayout={(event) => {
+            const { height } = event.nativeEvent.layout;
+            setSheetHeight(height);
+          }}
+          {...panResponder.panHandlers}
+        >
+          <View className="items-center py-3">
+            <View className="w-10 h-1 bg-gray-300 rounded-full" />
+          </View>
 
-        <View className="flex-row items-center justify-between px-6 pb-4">
-          <Typography.Xl className="font-bold text-gray-900">
-            Add to Cart
-          </Typography.Xl>
-          <TouchableOpacity
-            onPress={onClose}
-            className="p-2 rounded-full bg-gray-100"
-            activeOpacity={0.7}
-          >
-            <X size={20} color="#666" />
-          </TouchableOpacity>
-        </View>
-        <KeyboardAvoidingView>
+          <View className="flex-row items-center justify-between px-6 pb-4">
+            <Typography.Xl className="font-bold text-gray-900">
+              Add to Cart
+            </Typography.Xl>
+            <TouchableOpacity
+              onPress={onClose}
+              className="p-2 rounded-full bg-gray-100"
+              activeOpacity={0.7}
+            >
+              <X size={20} color="#666" />
+            </TouchableOpacity>
+          </View>
+
           <View className="px-6 pb-6">
             <View className="flex-row items-center mb-4">
               <View className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 mr-4">
@@ -344,8 +342,9 @@ export default function AddToCartBottomSheet({
               }
             </View>
           </View>
-        </KeyboardAvoidingView>
-      </Animated.View>
+        </View>
+      </KeyboardAvoidingView>
     </Modal>
+
   );
 }

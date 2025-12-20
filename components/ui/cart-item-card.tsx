@@ -12,7 +12,7 @@ interface CartItemCardProps extends CartItem {
   onAdd?: () => void;
 }
 
-export default function CartItemCard({ 
+export default function CartItemCard({
   onQuantityPress,
   onAdd,
   ...cartItem
@@ -22,7 +22,7 @@ export default function CartItemCard({
 
   const total = cartItem.price * cartItem.quantity;
   const product = cartItem.product;
-  
+
   return (
     <View className="bg-white rounded-2xl p-4 border border-gray-100 mb-3">
       <View className="flex-row items-center">
@@ -47,14 +47,14 @@ export default function CartItemCard({
               </Typography.Sm>
             )
           }
-    
-          
+
+
           <View className="flex-row items-center justify-between">
             {/* Row format: Delete | Quantity | Add */}
             <View className="flex-row items-center bg-gray-50 rounded-lg">
-              <CartItemDeleteButton cartItem={cartItem}/>
-              
-              <TouchableOpacity 
+              <CartItemDeleteButton cartItem={cartItem} />
+
+              <TouchableOpacity
                 onPress={onQuantityPress}
                 className="px-4 py-2 border-x border-gray-200"
                 activeOpacity={0.7}
@@ -63,8 +63,8 @@ export default function CartItemCard({
                   {cartItem.quantity}
                 </Typography.Base>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
+
+              <TouchableOpacity
                 className="p-2"
                 activeOpacity={0.7}
                 onPress={() => setVisible(true)}
@@ -72,7 +72,7 @@ export default function CartItemCard({
                 <Plus size={16} color="#22c55e" />
               </TouchableOpacity>
             </View>
-            
+
             <Typography.Base className="font-bold text-primary">
               {CURRENCY}{total.toFixed(2)}
             </Typography.Base>

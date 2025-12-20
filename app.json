@@ -19,7 +19,8 @@
     "android": {
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.lapinabakersapp"
+      "package": "com.lapinabakersapp",
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "output": "static",

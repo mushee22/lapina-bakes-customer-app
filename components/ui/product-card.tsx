@@ -41,7 +41,7 @@ export default function ProductCard({
     }
   }, [cartItems, id]);
 
- 
+
 
   return (
     <>
@@ -132,12 +132,12 @@ export default function ProductCard({
           name,
           price,
           image,
-          sellingPrice: sellingPrice ,
+          sellingPrice: sellingPrice,
           availableQuantity,
           gst,
         }}
       />
-     
+
     </>
   );
 }

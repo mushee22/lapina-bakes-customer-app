@@ -32,11 +32,11 @@ export default function OrderCard({
 
   const dateString = new Date(date || "").toLocaleDateString();
   const timeString = new Date(date || "").toLocaleTimeString();
-  
-  
+
+
 
   return (
-    <Link href={detailViewPathGroup == "customer" ? `/customer/(tabs)/order/${id}` : `/delivery/order/${id}`} asChild>
+    <Link href={`/customer/(tabs)/order/${id}`} asChild>
       <TouchableOpacity activeOpacity={0.95}>
         <View className="bg-white rounded-2xl p-4 shadow-sm shadow-black/5 border border-gray-100 mb-3">
           {/* Header Section */}
