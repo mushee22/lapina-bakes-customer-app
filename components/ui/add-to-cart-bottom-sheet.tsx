@@ -1,6 +1,6 @@
 import { CURRENCY } from "@/constants";
 import { useCartContext } from "@/hooks/use-cart";
-import { X } from "lucide-react-native";
+import { Minus, Plus, X } from "lucide-react-native";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import {
   Animated,
@@ -14,6 +14,7 @@ import {
   View
 } from "react-native";
 import { KeyboardAvoidingView } from "react-native-keyboard-controller";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button, Typography } from "../elements";
 import ProductPrice from "./product-price";
 
@@ -25,7 +26,6 @@ interface AddToCartBottomSheetProps {
     name: string;
     price: number;
     image?: string;
-    availableQuantity: number;
     gst?: number;
     sellingPrice?: number;
   };
@@ -41,9 +41,10 @@ export default function AddToCartBottomSheet({
   const [quantity, setQuantity] = useState(1);
   const [quantityText, setQuantityText] = useState("1");
   const [sheetHeight, setSheetHeight] = useState(0);
-  const [maxQuantityWarning, setMaxQuantityWarning] = useState("");
   const translateY = useRef(new Animated.Value(screenHeight)).current;
   const backdropOpacity = useRef(new Animated.Value(0)).current;
+
+  const insets = useSafeAreaInsets();
 
   const {
     cartItems,
@@ -152,21 +153,9 @@ export default function AddToCartBottomSheet({
 
     const numValue = parseInt(numericText);
 
-    if (
-      numValue > product.availableQuantity
-    ) {
-      setMaxQuantityWarning(`Max quantity is ${product.availableQuantity}`);
+    if (!isNaN(numValue) && numValue >= 1) {
       setQuantity(numValue);
-      return;
-    }
-
-    if (
-      !isNaN(numValue) &&
-      numValue >= 1 &&
-      numValue <= product.availableQuantity
-    ) {
-      setQuantity(numValue);
-      setMaxQuantityWarning("");
+      return
     }
   };
 
@@ -175,9 +164,19 @@ export default function AddToCartBottomSheet({
     if (isNaN(numValue) || numValue < 1) {
       setQuantity(1);
       setQuantityText("1");
-    } else if (numValue > product.availableQuantity) {
-      setQuantity(product.availableQuantity);
-      setQuantityText(product.availableQuantity.toString());
+    }
+  };
+
+  const handleIncrease = () => {
+    setQuantity(quantity + 1);
+    setQuantityText((quantity + 1).toString());
+  };
+
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+      setQuantityText((quantity - 1).toString());
+      // setMaxQuantityWarning("");
     }
   };
 
@@ -195,155 +194,162 @@ export default function AddToCartBottomSheet({
       onRequestClose={onClose}
       statusBarTranslucent={true}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : 'height'}
-        style={{ flex: 1 }}
-      >
-        <View
-          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
-          style={{
-            // transform: [{ translateY }],
-          }}
-          onLayout={(event) => {
-            const { height } = event.nativeEvent.layout;
-            setSheetHeight(height);
-          }}
-          {...panResponder.panHandlers}
+      <SafeAreaView className="flex-1" >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : 'height'}
+          style={{ flex: 1 }}
         >
-          <View className="items-center py-3">
-            <View className="w-10 h-1 bg-gray-300 rounded-full" />
-          </View>
-
-          <View className="flex-row items-center justify-between px-6 pb-4">
-            <Typography.Xl className="font-bold text-gray-900">
-              Add to Cart
-            </Typography.Xl>
-            <TouchableOpacity
-              onPress={onClose}
-              className="p-2 rounded-full bg-gray-100"
-              activeOpacity={0.7}
-            >
-              <X size={20} color="#666" />
-            </TouchableOpacity>
-          </View>
-
-          <View className="px-6 pb-6">
-            <View className="flex-row items-center mb-4">
-              <View className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 mr-4">
-                {
-                  <Image
-                    source={
-                      product.image
-                        ? { uri: product.image }
-                        : require("@/assets/images/logo.jpg")
-                    }
-                    className="w-full h-full"
-                    resizeMode="cover"
-                  />
-                }
-              </View>
-              <View className="flex-1">
-                <Typography.Lg
-                  className="font-bold text-gray-900 mb-1"
-                  numberOfLines={2}
-                >
-                  {product.name}
-                </Typography.Lg>
-                <ProductPrice price={product.price} sellingPrice={product.sellingPrice} />
-                {
-                  product.gst && (
-                    <Typography.Sm className="text-gray-600">
-                      GST({product.gst}%)
-                    </Typography.Sm>
-                  )
-                }
-                <Typography.Sm className="text-gray-500 mt-1">
-                  {product.availableQuantity} available
-                </Typography.Sm>
-              </View>
+          <View
+            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
+            style={{
+              // transform: [{ translateY }],
+            }}
+            onLayout={(event) => {
+              const { height } = event.nativeEvent.layout;
+              setSheetHeight(height);
+            }}
+            {...panResponder.panHandlers}
+          >
+            <View className="items-center py-3">
+              <View className="w-10 h-1 bg-gray-300 rounded-full" />
             </View>
 
-            <View className="mb-4">
-              <Typography.Lg className="font-semibold text-gray-900 mb-3">
-                Quantity
-              </Typography.Lg>
+            <View className="flex-row items-center justify-between px-6 pb-4">
+              <Typography.Xl className="font-bold text-gray-900">
+                Add to Cart
+              </Typography.Xl>
+              <TouchableOpacity
+                onPress={onClose}
+                className="p-2 rounded-full bg-gray-100"
+                activeOpacity={0.7}
+              >
+                <X size={20} color="#666" />
+              </TouchableOpacity>
+            </View>
 
-              <View className="items-center">
-                <View className="bg-white border-2 border-primary/20 rounded-2xl shadow-sm shadow-primary/5">
-                  <TextInput
-                    value={quantityText}
-                    onChangeText={handleQuantityChange}
-                    onBlur={handleQuantityBlur}
-                    keyboardType="number-pad"
-                    selectTextOnFocus
-                    style={{
-                      fontSize: 24,
-                      fontWeight: "bold",
-                      color: "#C85A2B",
-                      textAlign: "center",
-                      paddingHorizontal: 20,
-                      paddingVertical: 16,
-                      minWidth: 100,
-                    }}
-                    placeholder="1"
-                    placeholderTextColor="#C85A2B80"
-                    maxLength={3}
-                  />
+            <View className="px-6 pb-6">
+              <View className="flex-row items-center mb-4">
+                <View className="w-20 h-20 rounded-2xl overflow-hidden bg-gray-100 mr-4">
+                  {
+                    <Image
+                      source={
+                        product.image
+                          ? { uri: product.image }
+                          : require("@/assets/images/logo.jpg")
+                      }
+                      className="w-full h-full"
+                      resizeMode="cover"
+                    />
+                  }
                 </View>
-                {
-                  maxQuantityWarning ? (
-                    <Typography.Sm className="text-red-500 mt-3">
-                      {maxQuantityWarning}
-                    </Typography.Sm>
-                  )
-                    :
-                    <Typography.Sm className="text-gray-500 mt-3">
-                      Max {product.availableQuantity} items available
-                    </Typography.Sm>
-                }
-              </View>
-            </View>
-            <View className="bg-gray-50 rounded-2xl p-4 mb-4">
-              <View className="flex-row justify-between items-center">
-                <Typography.Lg className="font-semibold text-gray-700">
-                  Total
-                </Typography.Lg>
-                <Typography.Xl className="font-bold text-primary">
-                  {CURRENCY}
-                  {total}
-                </Typography.Xl>
-              </View>
-            </View>
-            <View className="flex-row  items-center">
-              {
-                cartItem?.quantity == quantity ? (
-                  <Button
-                    activeOpacity={0.8}
-                    onPress={handleAddToCart}
-                    className="bg-primary flex-1"
-                    disabled={true}
+                <View className="flex-1">
+                  <Typography.Lg
+                    className="font-bold text-gray-900 mb-1"
+                    numberOfLines={2}
                   >
-                    <Typography.Base className="text-white font-bold text-center">
-                      Current Quantity: {cartItem.quantity}
-                    </Typography.Base>
-                  </Button>
-                ) :
-                  maxQuantityWarning.length ?
-                    null :
+                    {product.name}
+                  </Typography.Lg>
+                  <ProductPrice price={product.price} sellingPrice={product.sellingPrice} />
+                  {
+                    product.gst && (
+                      <Typography.Sm className="text-gray-600">
+                        GST({product.gst}%)
+                      </Typography.Sm>
+                    )
+                  }
+                </View>
+              </View>
+
+              <View className="mb-4">
+                <Typography.Lg className="font-semibold text-gray-900 mb-3">
+                  Quantity
+                </Typography.Lg>
+
+                <View className="items-center">
+                  <View className="flex-row items-center gap-x-4">
+                    <TouchableOpacity
+                      onPress={handleDecrease}
+                      className="w-12 h-12 rounded-full border border-gray-200 items-center justify-center bg-gray-50"
+                      activeOpacity={0.7}
+                    >
+                      <Minus size={20} color="#374151" />
+                    </TouchableOpacity>
+
+                    <View className="bg-white border-2 border-primary/20 rounded-2xl shadow-sm shadow-primary/5">
+                      <TextInput
+                        value={quantityText}
+                        onChangeText={handleQuantityChange}
+                        onBlur={handleQuantityBlur}
+                        keyboardType="number-pad"
+                        selectTextOnFocus
+                        style={{
+                          fontSize: 24,
+                          fontWeight: "bold",
+                          color: "#C85A2B",
+                          textAlign: "center",
+                          paddingHorizontal: 20,
+                          paddingVertical: 12,
+                          minWidth: 80,
+                        }}
+                        placeholder="1"
+                        placeholderTextColor="#C85A2B80"
+                        maxLength={3}
+                      />
+                    </View>
+
+                    <TouchableOpacity
+                      onPress={handleIncrease}
+                      className="w-12 h-12 rounded-full border border-gray-200 items-center justify-center bg-gray-50"
+                      activeOpacity={0.7}
+                    >
+                      <Plus size={20} color="#374151" />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </View>
+              <View className="bg-gray-50 rounded-2xl p-4 mb-4">
+                <View className="flex-row justify-between items-center">
+                  <Typography.Lg className="font-semibold text-gray-700">
+                    Total
+                  </Typography.Lg>
+                  <Typography.Xl className="font-bold text-primary">
+                    {CURRENCY}
+                    {total}
+                  </Typography.Xl>
+                </View>
+              </View>
+              <View className="flex-row  items-center">
+                {
+                  cartItem?.quantity == quantity ? (
                     <Button
                       activeOpacity={0.8}
                       onPress={handleAddToCart}
                       className="bg-primary flex-1"
+                      disabled={true}
+                    >
+                      <Typography.Base className="text-white font-bold text-center">
+                        Current Quantity: {cartItem.quantity}
+                      </Typography.Base>
+                    </Button>
+                  ) :
+                    <Button
+                      activeOpacity={0.8}
+                      onPress={handleAddToCart}
+                      className="bg-primary flex-1"
+                      style={{
+                        marginBottom: insets.bottom + 12
+                      }}
                     >
                       <Typography.Base className="text-white font-bold text-center">
                         {cartItem ? "Update" : "Add"} {quantity} to Cart
                       </Typography.Base>
                     </Button>
-              }
+                }
+              </View>
             </View>
           </View>
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     </Modal>
 
   );

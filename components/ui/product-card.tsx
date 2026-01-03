@@ -17,7 +17,6 @@ export interface ProductCardProps {
   stock?: number;
   sellingPrice?: number;
   discount?: number;
-  availableQuantity?: number;
   gst?: number;
 }
 
@@ -28,7 +27,6 @@ export default function ProductCard({
   price,
   className,
   sellingPrice,
-  availableQuantity = 0,
   gst = 0,
 }: ProductCardProps) {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -40,7 +38,6 @@ export default function ProductCard({
       return getCartItem(id);
     }
   }, [cartItems, id]);
-
 
 
   return (
@@ -103,22 +100,16 @@ export default function ProductCard({
               </TouchableOpacity>
             </View>
           ) : (
-            availableQuantity > 0 ? (
-              <TouchableOpacity
-                activeOpacity={0.8}
-                className="bg-primary flex-row items-center justify-center py-2.5 px-4 rounded-xl shadow-sm"
-                onPress={() => setShowBottomSheet(true)}
-              >
-                <Plus size={16} color="white" strokeWidth={2} />
-                <Typography.Sm className="text-white font-semibold ml-1">
-                  Add to Cart
-                </Typography.Sm>
-              </TouchableOpacity>
-            ) : (
-              <Typography.Sm className="text-red-500 font-semibold">
-                Out of Stock
+            <TouchableOpacity
+              activeOpacity={0.8}
+              className="bg-primary flex-row items-center justify-center py-2.5 px-4 rounded-xl shadow-sm"
+              onPress={() => setShowBottomSheet(true)}
+            >
+              <Plus size={16} color="white" strokeWidth={2} />
+              <Typography.Sm className="text-white font-semibold ml-1">
+                Add to Cart
               </Typography.Sm>
-            )
+            </TouchableOpacity>
           )}
         </View>
       </TouchableOpacity>
@@ -133,7 +124,6 @@ export default function ProductCard({
           price,
           image,
           sellingPrice: sellingPrice,
-          availableQuantity,
           gst,
         }}
       />

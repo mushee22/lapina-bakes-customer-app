@@ -1,7 +1,9 @@
+import { notificationService } from '@/service/notification';
+import { useMutation } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useAuthContext } from './use-auth-context';
@@ -17,7 +19,28 @@ Notifications.setNotificationHandler({
 
 export default function useExpoPushNotification() {
 
+  const [token, setToken] = useState("")
+
   const { isAuthenticating } = useAuthContext();
+
+
+  const { mutateAsync: onRegisterForPushNotificationsAsync } = useMutation({
+    mutationKey: ['register-for-push-notifications'],
+    mutationFn: (data: { token: string, platform: string, deviceId?: string }) => notificationService.registerForPushNotificationsAsync(data.token, data.platform, data.deviceId),
+    onSuccess: () => {
+      Toast.show({
+        type: 'success',
+        text1: 'Push Notification Enabled',
+      });
+    },
+    onError: () => {
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong on register for push notification',
+      });
+    }
+  })
+
 
 
   useEffect(() => {
@@ -29,9 +52,9 @@ export default function useExpoPushNotification() {
     });
 
     const notificationListener = Notifications
-     .addNotificationReceivedListener(onRacievNotificationOnForground);
+      .addNotificationReceivedListener(onRacievNotificationOnForground);
     const responseListener = Notifications
-    .addNotificationResponseReceivedListener(onClickOnNotification);
+      .addNotificationResponseReceivedListener(onClickOnNotification);
 
     return () => {
       notificationListener.remove();
@@ -41,7 +64,9 @@ export default function useExpoPushNotification() {
   }, [isAuthenticating])
 
   const handleSavePushToken = async (token?: string) => {
-     if(!token) return
+    if (!token) return
+    onRegisterForPushNotificationsAsync({ token, platform: Platform.OS })
+    setToken(token)
   }
 
   const onRacievNotificationOnForground = (notification: Notifications.Notification) => {

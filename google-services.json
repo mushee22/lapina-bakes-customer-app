@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424599296960",
+    "project_id": "lapina-bakes-6830b",
+    "storage_bucket": "lapina-bakes-6830b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424599296960:android:2c02284b78b2d5102d8625",
+        "android_client_info": {
+          "package_name": "com.lapinabakersapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvhs0KJYvxulcrMxMqf55QIAgfoyGC87c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

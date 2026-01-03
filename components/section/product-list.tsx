@@ -33,7 +33,6 @@ export default function ProductList({ products, hasMore, onLoadMore }: Props) {
           price={item.price}
           sellingPrice={item.selling_price}
           discount={item.discount_percentage}
-          availableQuantity={item.stock}
           id={item.id}
           gst={item.gst}
         />

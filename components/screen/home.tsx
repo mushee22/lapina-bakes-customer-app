@@ -1,3 +1,4 @@
+import useExpoPushNotification from "@/hooks/use-expo-push-notification";
 import useRefresh from "@/hooks/use-refresh";
 import { categoryService } from "@/service/category";
 import { productService } from "@/service/product";
@@ -9,10 +10,13 @@ import { useDebouncedCallback } from 'use-debounce';
 import { InputBox, ScreenWrapper, Typography } from "../elements";
 import { CategoryFilter, ProductList } from "../section";
 
+
 export default function HomeScreen() {
   const [query, setQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [page, setPage] = useState(1);
+
+  const token = useExpoPushNotification()
 
   const { isRefreshing, onRefresh } = useRefresh(['products', 'categories'])
 
