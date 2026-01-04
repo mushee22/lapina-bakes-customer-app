@@ -14,7 +14,7 @@ class ProductService {
 
     async getProducts(categoryId?: string, query?: string, page?: number) {
         const urlParams = new URLSearchParams()
-        
+
         if (categoryId) {
             urlParams.append("category_id", categoryId)
         }
@@ -27,10 +27,11 @@ class ProductService {
             urlParams.append("page", page.toString())
         }
 
-        // urlParams.append("per_page", "5")
 
         const response = await apiClient.get<Product[]>(this.baseUrl + '?' + urlParams.toString());
-     
+
+        console.log(response.meta)
+
         return {
             products: response.data,
             meta: response.meta || undefined,
