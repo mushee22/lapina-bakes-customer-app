@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
+import * as SecureStore from "expo-secure-store";
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -41,14 +42,12 @@ export default function useExpoPushNotification() {
     }
   })
 
-
-
   useEffect(() => {
 
     if (isAuthenticating) return
 
-    registerForPushNotificationsAsync().then((token) => {
-      handleSavePushToken(token);
+    registerForPushNotificationsAsync().then((data) => {
+      handleSavePushToken(data.token ?? '', data.isSaved);
     });
 
     const notificationListener = Notifications
@@ -63,9 +62,10 @@ export default function useExpoPushNotification() {
 
   }, [isAuthenticating])
 
-  const handleSavePushToken = async (token?: string) => {
-    if (!token) return
-    onRegisterForPushNotificationsAsync({ token, platform: Platform.OS })
+  const handleSavePushToken = async (token: string, isSaved: boolean) => {
+    if (!token || isSaved) return
+    await onRegisterForPushNotificationsAsync({ token, platform: Platform.OS })
+    await SecureStore.setItemAsync('push_token', token)
     setToken(token)
   }
 
@@ -92,9 +92,15 @@ async function registerForPushNotificationsAsync() {
   }
 
   if (Device.isDevice) {
+
+    const savedToken = await SecureStore.getItemAsync('push_token')
+    if (savedToken) return {
+      token: savedToken,
+      isSaved: true
+    }
+
     const { status: existingStatus } = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;
-
 
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
@@ -102,10 +108,11 @@ async function registerForPushNotificationsAsync() {
     }
 
     if (finalStatus !== 'granted') {
-      return '';
+      return {
+        token: '',
+        isSaved: false
+      };
     }
-
-
 
     try {
       const projectId =
@@ -132,5 +139,8 @@ async function registerForPushNotificationsAsync() {
     });
   }
 
-  return token;
+  return {
+    token,
+    isSaved: false
+  };
 }

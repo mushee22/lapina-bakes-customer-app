@@ -88,6 +88,7 @@ export default function AuthContextProvider({
     setUser(undefined);
     setToken(undefined);
     await SecureStore.deleteItemAsync("token");
+    await SecureStore.deleteItemAsync("push_token")
     router.replace("/login");
   };
 
