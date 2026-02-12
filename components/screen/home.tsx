@@ -5,7 +5,7 @@ import { productService } from "@/service/product";
 import { Product } from "@/type/product";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { Search } from "lucide-react-native";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native";
 import { useDebouncedCallback } from 'use-debounce';
 import { InputBox, ScreenWrapper, Typography } from "../elements";
@@ -41,13 +41,43 @@ export default function HomeScreen() {
 
 
 
-  const handleOnSelectCategory = (category: string) => {
+  const handleOnSelectCategory = useCallback((category: string) => {
     setSelectedCategory(category);
-  }
+  }, [])
 
   const debouced = useDebouncedCallback((value: string) => {
     setQuery(value);
   }, 300);
+
+
+  // Instead of a function, memoize the JSX block itself
+  const memoizedHeader = useMemo(() => (
+    <>
+      <View className="mb-6">
+        <InputBox
+          placeholder="Search for cakes..."
+          startIcon={<Search color="#666" size={20} />}
+          onChangeText={debouced}
+        />
+      </View>
+
+      <View className="mb-4">
+        <Typography.Base className="font-semibold text-gray-800 mb-3">
+          Categories
+        </Typography.Base>
+        {isLoadingCategories ? (
+          <ActivityIndicator color="#C85A2B" />
+        ) : (
+          <CategoryFilter
+            categories={categories || []}
+            onSelect={handleOnSelectCategory}
+            selectedCategory={selectedCategory}
+          />
+        )}
+      </View>
+    </>
+  ), [categories, isLoadingCategories, handleOnSelectCategory, selectedCategory]);
+
 
 
 
@@ -61,33 +91,7 @@ export default function HomeScreen() {
 
       <FlatList
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        ListHeaderComponent={() => (
-          <>
-            <View className="mb-6">
-              <InputBox
-                placeholder="Search for cakes, pastries, cookies..."
-                startIcon={<Search color="#666" size={20} />}
-                onChangeText={debouced}
-              // className="h-10"
-              />
-            </View>
-
-            <View className="mb-4">
-              <Typography.Base className="font-semibold text-gray-800 mb-3">Categories</Typography.Base>
-              {
-                isLoadingCategories ?
-                  <ActivityIndicator color="#C85A2B" />
-                  : (
-                    <CategoryFilter
-                      categories={categories || []}
-                      onSelect={handleOnSelectCategory}
-                      selectedCategory={selectedCategory}
-                    />
-                  )
-              }
-            </View>
-          </>
-        )}
+        ListHeaderComponent={memoizedHeader}
         data={infiniteData?.pages.flatMap((page) => page.products) ?? []}
         numColumns={2}
         columnWrapperClassName="gap-4"

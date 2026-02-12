@@ -89,36 +89,36 @@ export default function AddToCartBottomSheet({
     }
   }, [cartItems, isFetchingCart, isRefetchingCart]);
 
-  useEffect(() => {
-    if (visible && sheetHeight > 0) {
-      translateY.setValue(sheetHeight);
-      Animated.parallel([
-        Animated.timing(translateY, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-        Animated.timing(backdropOpacity, {
-          toValue: 1,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    } else if (!visible && sheetHeight > 0) {
-      Animated.parallel([
-        Animated.timing(translateY, {
-          toValue: sheetHeight,
-          duration: 250,
-          useNativeDriver: true,
-        }),
-        Animated.timing(backdropOpacity, {
-          toValue: 0,
-          duration: 250,
-          useNativeDriver: true,
-        }),
-      ]).start();
-    }
-  }, [visible, sheetHeight]);
+  // useEffect(() => {
+  //   if (visible && sheetHeight > 0) {
+  //     translateY.setValue(sheetHeight);
+  //     Animated.parallel([
+  //       Animated.timing(translateY, {
+  //         toValue: 0,
+  //         duration: 300,
+  //         useNativeDriver: true,
+  //       }),
+  //       Animated.timing(backdropOpacity, {
+  //         toValue: 1,
+  //         duration: 300,
+  //         useNativeDriver: true,
+  //       }),
+  //     ]).start();
+  //   } else if (!visible && sheetHeight > 0) {
+  //     Animated.parallel([
+  //       Animated.timing(translateY, {
+  //         toValue: sheetHeight,
+  //         duration: 250,
+  //         useNativeDriver: true,
+  //       }),
+  //       Animated.timing(backdropOpacity, {
+  //         toValue: 0,
+  //         duration: 250,
+  //         useNativeDriver: true,
+  //       }),
+  //     ]).start();
+  //   }
+  // }, [visible, sheetHeight]);
 
   const panResponder = useRef(
     PanResponder.create({
@@ -193,14 +193,16 @@ export default function AddToCartBottomSheet({
       animationType="slide"
       onRequestClose={onClose}
       statusBarTranslucent={true}
+    // className="z-[100]"
     >
-      <SafeAreaView className="flex-1" >
+      <SafeAreaView className="flex-1 z-50" >
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : 'height'}
           style={{ flex: 1 }}
+          className="flex-col justify-end bg-red-400"
         >
           <View
-            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-3xl"
+            className=" left-0 right-0 bg-green-500 rounded-t-3xl"
             style={{
               // transform: [{ translateY }],
             }}
