@@ -199,10 +199,10 @@ export default function AddToCartBottomSheet({
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : 'height'}
           style={{ flex: 1 }}
-          className="flex-col justify-end bg-red-400"
+          className="flex-col justify-end"
         >
           <View
-            className=" left-0 right-0 bg-green-500 rounded-t-3xl"
+            className=" left-0 right-0 rounded-t-3xl bg-white"
             style={{
               // transform: [{ translateY }],
             }}
