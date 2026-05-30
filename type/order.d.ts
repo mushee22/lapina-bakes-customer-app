@@ -1,7 +1,7 @@
 import { Product } from "./product";
 import { Location, Store } from "./store";
 
-export type OrderStatus = "order_placed" | "ready_to_dispatch" | "out_of_delivery" |  "delivered" | "cancelled" 
+export type OrderStatus = "order_placed" | "ready_to_dispatch" | "out_of_delivery" | "delivered" | "cancelled"
 
 export type OrderItems = {
     id: number,
@@ -16,7 +16,7 @@ export type OrderItems = {
     subtotal_with_gst?: number,
     created_at: string,
     updated_at: string,
-    
+
 }
 
 
@@ -64,6 +64,9 @@ export type CartItem = {
 export type CartSummary = {
     total_items: number,
     subtotal: number,
+    total: number,
+    total_amount: number,
+    total_gst_amount: number,
     currency: string,
 }
 

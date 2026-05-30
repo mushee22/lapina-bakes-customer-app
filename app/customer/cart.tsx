@@ -21,12 +21,14 @@ export default function Index() {
     isPlacingOrder,
     showOrderSuccess,
     lastOrder,
-    onCloseOrderSuccess,
+    onCloseOrderSuccess
   } = useCartContext();
 
+  console.log(cartSummary, "cart summery")
+
   const subtotal = cartSummary?.subtotal || 0;
-  const tax = Math.round(subtotal * 0.08);
-  const total = cartSummary?.subtotal || 0;
+  const tax = cartSummary?.total_gst_amount || 0;
+  const total = cartSummary?.total || 0;
 
   return (
     <ScreenWrapper edges={[]}>
@@ -70,8 +72,8 @@ export default function Index() {
                   {cartItems.map((item) => (
                     <CartItemCard
                       key={item.product_id}
-                      onQuantityPress={() => {}}
-                      onAdd={() => {}}
+                      onQuantityPress={() => { }}
+                      onAdd={() => { }}
                       {...item}
                     />
                   ))}
@@ -139,7 +141,7 @@ export default function Index() {
                   </View>
                   <View className="flex-row justify-between py-2">
                     <Typography.Base className="text-gray-600">
-                      Tax (8%)
+                      Tax
                     </Typography.Base>
                     <Typography.Base className="font-medium">
                       {CURRENCY}
@@ -185,9 +187,9 @@ export default function Index() {
       )}
 
       {showOrderSuccess ? (
-      <OrderSuccessModal
-        order={lastOrder}
-      />
+        <OrderSuccessModal
+          order={lastOrder}
+        />
       ) : null}
     </ScreenWrapper>
   );

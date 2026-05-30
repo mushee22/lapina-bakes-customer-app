@@ -295,7 +295,7 @@ export default function AddToCartBottomSheet({
                         }}
                         placeholder="1"
                         placeholderTextColor="#C85A2B80"
-                        maxLength={3}
+                        maxLength={4}
                       />
                     </View>
 

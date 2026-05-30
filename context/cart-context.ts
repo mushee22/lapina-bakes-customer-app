@@ -3,7 +3,7 @@ import { createContext } from "react";
 
 export type CartContextType = {
   cartItems: CartItem[];
-  cartSummary?:CartSummary;
+  cartSummary?: CartSummary;
   isFetchingCart: boolean;
   isRefetchingCart: boolean;
   isUpdatingCart: boolean;
@@ -19,7 +19,7 @@ export type CartContextType = {
   getCartItem: (id: number) => CartItem | undefined;
   onCheckoutFromCart: () => void;
   onCancelOrder: (id: number) => void;
-  
+
   // Order success modal state
   showOrderSuccess: boolean;
   lastOrder: Order | null;
@@ -39,18 +39,21 @@ export const CartContext = createContext<CartContextType>({
   cartSummary: {
     total_items: 0,
     subtotal: 0,
-    currency: "PHP",
+    total: 0,
+    total_amount: 0,
+    total_gst_amount: 0,
+    currency: "$",
   },
-  onAddItem: () => {},
-  onUpdateItemQuantity: () => {},
-  onRemoveItem: () => {},
-  onClearCart: () => {},
+  onAddItem: () => { },
+  onUpdateItemQuantity: () => { },
+  onRemoveItem: () => { },
+  onClearCart: () => { },
   getCartItem: (id: number) => undefined,
-  onCheckoutFromCart: () => {},
-  onCancelOrder: () => {},
-  
+  onCheckoutFromCart: () => { },
+  onCancelOrder: () => { },
+
   // Order success modal default values
   showOrderSuccess: false,
   lastOrder: null,
-  onCloseOrderSuccess: () => {},
+  onCloseOrderSuccess: () => { },
 });

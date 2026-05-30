@@ -88,7 +88,6 @@ export default function CartItemCard({
           sellingPrice: product.selling_price,
           price: product.price,
           image: product.main_image_url,
-          availableQuantity: product.stock,
           gst: product.gst,
         }}
       />

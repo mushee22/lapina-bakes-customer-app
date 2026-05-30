@@ -119,6 +119,8 @@ export default function HomeScreen() {
             discount={item.discount_percentage}
             id={item.id}
             gst={item.gst}
+            description={item.description}
+            imageUrls={item.image_urls}
           />
         )}
         keyExtractor={(item: Product) => item.id.toString()}

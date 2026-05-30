@@ -6,6 +6,7 @@ import { Image, TouchableOpacity, View } from "react-native";
 import { Typography } from "../elements";
 import AddToCartBottomSheet from "./add-to-cart-bottom-sheet";
 import CartItemDeleteButton from "./cart-item-delete";
+import ProductDetailModal from "./product-detail-modal";
 import ProductPrice from "./product-price";
 
 export interface ProductCardProps {
@@ -14,10 +15,11 @@ export interface ProductCardProps {
   name: string;
   price: number;
   className?: string;
-  stock?: number;
   sellingPrice?: number;
   discount?: number;
   gst?: number;
+  description?: string;
+  imageUrls?: string[];
 }
 
 export default function ProductCard({
@@ -27,9 +29,13 @@ export default function ProductCard({
   price,
   className,
   sellingPrice,
+  discount,
   gst = 0,
+  description,
+  imageUrls,
 }: ProductCardProps) {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
 
   const { getCartItem, cartItems } =
     useCartContext();
@@ -42,14 +48,16 @@ export default function ProductCard({
 
   return (
     <>
-      <TouchableOpacity
-        activeOpacity={0.95}
+      <View
         className={cn(
           "bg-white flex-col flex-1 overflow-hidden rounded-2xl shadow-sm shadow-black/5 border border-gray-100",
           className
         )}
       >
-        <View>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => setShowDetailModal(true)}
+        >
           <Image
             source={
               image ? { uri: image } : require("@/assets/images/logo.jpg")
@@ -57,17 +65,22 @@ export default function ProductCard({
             className="w-full h-[140px] rounded-t-2xl"
             resizeMode="cover"
           />
-        </View>
+        </TouchableOpacity>
 
         {/* Content Container */}
         <View className="p-3 flex-1">
           {/* Product Name */}
-          <Typography.Base
-            className="font-semibold text-gray-800 mb-2 leading-5"
-            numberOfLines={2}
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => setShowDetailModal(true)}
           >
-            {name ?? ""}
-          </Typography.Base>
+            <Typography.Base
+              className="font-semibold text-gray-800 mb-2 leading-5"
+              numberOfLines={2}
+            >
+              {name ?? ""}
+            </Typography.Base>
+          </TouchableOpacity>
 
           {/* Price Container */}
           <View className="flex-row items-center justify-between mb-3">
@@ -112,7 +125,7 @@ export default function ProductCard({
             </TouchableOpacity>
           )}
         </View>
-      </TouchableOpacity>
+      </View>
 
       {/* Bottom Sheet */}
       <AddToCartBottomSheet
@@ -128,6 +141,23 @@ export default function ProductCard({
         }}
       />
 
+      {/* Product Detail Full View Modal */}
+      <ProductDetailModal
+        visible={showDetailModal}
+        onClose={() => setShowDetailModal(false)}
+        product={{
+          id,
+          name,
+          price,
+          image,
+          sellingPrice,
+          discount,
+          gst,
+          description,
+          imageUrls,
+        }}
+      />
     </>
   );
 }
+
