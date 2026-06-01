@@ -8,9 +8,11 @@ import { usePlatform } from "@/hooks/use-platform";
 import { cn } from "@/lib/utils";
 import { MapPin, Phone, ShoppingBag, Trash } from "lucide-react-native";
 import { ActivityIndicator, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Index() {
   const { isIOS } = usePlatform();
+  const insets = useSafeAreaInsets();
 
   const {
     cartItems,
@@ -165,12 +167,18 @@ export default function Index() {
           </ScrollView>
 
           {cartItems && cartItems?.length > 0 && (
-            <View className={cn("px-4", isIOS ? "pb-8" : "pb-4")}>
+            <View
+              className={cn("px-4")}
+              style={{
+                marginBottom: isIOS ? 32 : insets.bottom + 12
+              }}
+            >
               <Button
                 className="bg-primary text-white font-bold rounded-2xl h-14 items-center justify-center shadow-lg shadow-primary/25"
                 onPress={onCheckoutFromCart}
                 disabled={isPlacingOrder}
                 isLoading={isPlacingOrder}
+
               >
                 <View className="flex-row items-center">
                   {!isPlacingOrder && (
