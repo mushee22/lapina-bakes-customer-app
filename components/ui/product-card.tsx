@@ -62,20 +62,20 @@ export default function ProductCard({
             source={
               image ? { uri: image } : require("@/assets/images/logo.jpg")
             }
-            className="w-full h-[140px] rounded-t-2xl"
+            className="w-full h-[115px] rounded-t-2xl"
             resizeMode="cover"
           />
         </TouchableOpacity>
 
         {/* Content Container */}
-        <View className="p-3 flex-1">
+        <View className="p-3 pt-2 flex-1">
           {/* Product Name */}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setShowDetailModal(true)}
           >
             <Typography.Base
-              className="font-semibold text-gray-800 mb-2 leading-5"
+              className="font-semibold text-gray-800  leading-5"
               numberOfLines={2}
             >
               {name ?? ""}
@@ -83,7 +83,7 @@ export default function ProductCard({
           </TouchableOpacity>
 
           {/* Price Container */}
-          <View className="flex-row items-center justify-between mb-3">
+          <View className="flex-row items-center justify-between mb-1">
             <View className="flex-1">
               <View className="flex-row items-baseline">
                 <ProductPrice price={price} sellingPrice={sellingPrice} />

@@ -53,18 +53,16 @@ export default function HomeScreen() {
   // Instead of a function, memoize the JSX block itself
   const memoizedHeader = useMemo(() => (
     <>
-      <View className="mb-6">
+      <View className="mb-2">
         <InputBox
           placeholder="Search for cakes..."
-          startIcon={<Search color="#666" size={20} />}
+          startIcon={<Search color="#666" size={18} />}
           onChangeText={debouced}
+          containerClassName="h-[50px]"
         />
       </View>
 
-      <View className="mb-4">
-        <Typography.Base className="font-semibold text-gray-800 mb-3">
-          Categories
-        </Typography.Base>
+      <View className="mb-1">
         {isLoadingCategories ? (
           <ActivityIndicator color="#C85A2B" />
         ) : (
@@ -82,11 +80,11 @@ export default function HomeScreen() {
 
 
   return (
-    <ScreenWrapper edges={[]}>
+    <ScreenWrapper edges={[]} className="pt-2">
 
-      <View className="mb-6">
-        <Typography.Lg className="font-bold text-gray-800 mb-1">Welcome to Lapina Bakes</Typography.Lg>
-        <Typography.Sm className="text-gray-600">Discover our freshly baked delights</Typography.Sm>
+      <View className="mb-2">
+        <Typography.Lg className="font-bold text-gray-800">Welcome to Lapina Bakes</Typography.Lg>
+        <Typography.Sm className="text-gray-600 text-[10px]">Discover our freshly baked delights</Typography.Sm>
       </View>
 
       <FlatList

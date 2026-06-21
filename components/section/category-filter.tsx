@@ -16,7 +16,7 @@ export default function CategoryFilter({ categories, onSelect, selectedCategory 
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={{ paddingHorizontal: 4, paddingVertical: 4 }}
     >
-      <View className="flex-row gap-4">
+      <View className="flex-row gap-2">
         <CategoryBadge
           id={"all"}
           isSelected={selectedCategory === ""}
@@ -53,22 +53,20 @@ function CategoryBadge({ id, onSelect, isSelected, name }: CategoryBadge) {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={() => onSelect(id)}
-      className={`items-center justify-center rounded-2xl min-w-[80px] ${
-        isSelected
-          ? "bg-primary shadow-sm shadow-primary/10"
-          : "bg-white shadow-sm shadow-black/5"
-      }`}
+      className={`items-center justify-center rounded-2xl min-w-[80px] ${isSelected
+        ? "bg-primary shadow-sm shadow-primary/10"
+        : "bg-white shadow-sm shadow-black/5"
+        }`}
       style={{
-        paddingVertical: 12,
+        paddingVertical: 6,
         paddingHorizontal: 16,
         borderWidth: isSelected ? 0 : 1,
         borderColor: isSelected ? "transparent" : "#E5E7EB",
       }}
     >
       <Typography.Sm
-        className={`font-semibold text-center ${
-          isSelected ? "text-white" : "text-gray-700"
-        }`}
+        className={`font-semibold text-center ${isSelected ? "text-white" : "text-gray-700"
+          }`}
       >
         {name}
       </Typography.Sm>

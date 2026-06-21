@@ -11,7 +11,7 @@ export default function ProductPrice({
 }) {
   return (
     <View className="flex-row items-baseline">
-      <Typography.Sm className="text-primary font-bold text-lg">
+      <Typography.Sm className="text-primary font-bold text-base">
         {CURRENCY}
         {sellingPrice || price}
       </Typography.Sm>
