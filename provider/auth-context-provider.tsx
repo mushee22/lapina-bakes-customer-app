@@ -92,6 +92,8 @@ export default function AuthContextProvider({
     router.replace("/login");
   };
 
+
+
   return (
     <AuthContext.Provider
       value={{

@@ -46,6 +46,8 @@ class ApiClient {
 
       const path = this.baseUrl + url
 
+      console.log(path, token)
+
       const response = await fetch(path, config);
 
       if (response.status === 401) {

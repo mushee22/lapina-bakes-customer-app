@@ -10,6 +10,7 @@ export type User = {
   created_at: string;
   updated_at: string;
   primary_store: Store;
+  remaining_balance: number;
   stores: Store[];
   stores_count: number;
   delivery_boy_statistics?: DeliveryStatistics;

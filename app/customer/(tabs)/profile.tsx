@@ -7,6 +7,7 @@ import useRefresh from "@/hooks/use-refresh";
 import { Link, useRouter } from "expo-router";
 import {
   ChevronRight,
+  CreditCard,
   HelpCircle,
   LogOut,
   MapPin,
@@ -16,25 +17,27 @@ import {
 import { useState } from "react";
 import { Image, RefreshControl, ScrollView, TouchableOpacity, View } from "react-native";
 
+
+
 export default function Index() {
 
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
-  
+
   const [isStoreAddressDialogVisible, setIsStoreAddressDialogVisible] = useState(false);
 
   const router = useRouter();
-  
+
   const { onLogout, user } = useAuthContext();
-  
+
   const { isRefreshing, onRefresh } = useRefresh(["user"]);
 
   return (
     <>
       <ScreenWrapper edges={[]}>
-        <ScrollView 
-         showsVerticalScrollIndicator={false} 
-         className="flex-1"
-         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          className="flex-1"
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
         >
           <View className="bg-white rounded-2xl p-4 shadow-sm shadow-black/5 border border-gray-100 mb-6">
             <View className="flex-row items-center">
@@ -60,28 +63,46 @@ export default function Index() {
           </View>
 
           <View className="flex-row gap-3 mb-6">
-           <Link href="/customer/(tabs)/order" className="flex-1">
-            <View className="w-full bg-white rounded-2xl p-4 shadow-sm shadow-black/5 border border-gray-100">
-              <View className="items-center">
-                <Typography.Lg className="font-bold text-primary">
-                  {user?.order_statistics?.total_orders || 0}
-                </Typography.Lg>
-                <Typography.Sm className="text-gray-600 text-center">
-                  Total Orders
-                </Typography.Sm>
+            <Link
+              href="/customer/(tabs)/order"
+              asChild
+            >
+              <View className=" flex-1 h-full bg-white rounded-2xl  p-4 shadow-sm shadow-black/5 border border-gray-100">
+                <View className="items-center">
+                  <Typography.Lg className="font-bold text-primary">
+                    {user?.order_statistics?.total_orders || 0}
+                  </Typography.Lg>
+                  <Typography.Sm className="text-gray-600 text-xs text-center">
+                    Total Orders
+                  </Typography.Sm>
+                </View>
               </View>
-            </View>
-           </Link>
+            </Link>
             <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm shadow-black/5 border border-gray-100">
               <View className="items-center">
                 <Typography.Lg className="font-bold text-green-600">
                   ₹{user?.order_statistics?.total_amount || 0}
                 </Typography.Lg>
-                <Typography.Sm className="text-gray-600 text-center">
+                <Typography.Sm className="text-gray-600 text-xs text-center">
                   Total Spent
                 </Typography.Sm>
               </View>
             </View>
+            <Link
+              href="/transactions"
+              asChild
+            >
+              <View className="flex-1 bg-white rounded-2xl p-4 shadow-sm shadow-black/5 border border-gray-100">
+                <View className="items-center">
+                  <Typography.Lg className="font-bold text-green-600">
+                    ₹{user?.remaining_balance || 0}
+                  </Typography.Lg>
+                  <Typography.Sm className="text-gray-600 text-xs text-center">
+                    Outstanding Balance
+                  </Typography.Sm>
+                </View>
+              </View>
+            </Link>
           </View>
 
           <View className="bg-white rounded-2xl shadow-sm shadow-black/5 border border-gray-100 mb-6">
@@ -90,6 +111,13 @@ export default function Index() {
               title="My Orders"
               subtitle="Track your recent orders"
               onPress={() => router.push("/customer/(tabs)/order")}
+            />
+            <ProfileMenuItem
+              icon={<CreditCard size={20} color={themeConfig.colors.brand} />}
+              title="Transactions"
+              subtitle="View your transaction history"
+              showBorder
+              onPress={() => router.push("/transactions")}
             />
             <ProfileMenuItem
               icon={<MapPin size={20} color={themeConfig.colors.brand} />}
